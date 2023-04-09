@@ -1,0 +1,15 @@
+name: "Install GStreamer"
+description: "Installs the GStreamer binaries"
+inputs:
+  arch:
+    description: "cpu architecture to install for"
+    required: true
+  version:
+    description: "version to install"
+    required: true
+    defautlt: "1.22.0"
+runs:
+  using: "composite"
+  steps:
+    - run: python action.py --arch ${{ inputs.arch }} --version ${{ inputs.version }}
+      shell: bash
