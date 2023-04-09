@@ -1,5 +1,5 @@
 name: "Install GStreamer"
-description: "Installs the GStreamer binaries"
+description: "Installs GStreamer in a GitHub Actions runner"
 inputs:
   arch:
     description: "cpu architecture to install for"
