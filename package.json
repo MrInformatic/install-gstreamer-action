@@ -29,6 +29,7 @@
     "download": "^8.0.0"
   },
   "devDependencies": {
+    "@types/download": "^8.0.2",
     "@types/node": "^18.15.0",
     "@typescript-eslint/parser": "^5.57.1",
     "@vercel/ncc": "^0.36.1",
