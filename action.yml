@@ -9,7 +9,5 @@ inputs:
     required: true
     defautlt: "1.22.0"
 runs:
-  using: "composite"
-  steps:
-    - run: python action.py --arch ${{ inputs.arch }} --version ${{ inputs.version }}
-      shell: bash
+  using: 'node16'
+  main: 'dist/index.js'
