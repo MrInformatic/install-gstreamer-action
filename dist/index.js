@@ -50,7 +50,7 @@ const download_1 = __importDefault(__nccwpck_require__(7490));
 function install_mac(url) {
     return __awaiter(this, void 0, void 0, function* () {
         core.info(`install: ${url}`);
-        yield (0, download_1.default)(url, 'package.pkg');
+        yield (0, download_1.default)(url, './', { filename: 'package.pkg' });
         child_process.execSync('sudo installer -pkg package.pkg -target /');
         fs.rmSync('package.pkg');
     });
@@ -58,8 +58,8 @@ function install_mac(url) {
 function install_win(url) {
     return __awaiter(this, void 0, void 0, function* () {
         core.info(`install: ${url}`);
-        yield (0, download_1.default)(url, 'installer.msi');
-        child_process.execSync('msiexec.exe /i installer.msi /qn');
+        yield (0, download_1.default)(url, './', { filename: 'installer.msi' });
+        child_process.execSync('start /wait msiexec.exe /i installer.msi /qn');
         fs.rmSync('installer.msi');
     });
 }
@@ -94,15 +94,15 @@ function run() {
         `);
                     break;
                 case 'darwin':
-                    install_mac(`https://gstreamer.freedesktop.org/data/pkg/osx/${version}/gstreamer-1.0-${version}-universal.pkg`);
-                    install_mac(`https://gstreamer.freedesktop.org/data/pkg/osx/${version}/gstreamer-1.0-devel-${version}-universal.pkg`);
+                    yield install_mac(`https://gstreamer.freedesktop.org/data/pkg/osx/${version}/gstreamer-1.0-${version}-universal.pkg`);
+                    yield install_mac(`https://gstreamer.freedesktop.org/data/pkg/osx/${version}/gstreamer-1.0-devel-${version}-universal.pkg`);
                     vars = ['PATH', 'PKG_CONFIG_PATH'];
                     process.env.PATH = `/Library/Frameworks/GStreamer.framework/Versions/1.0/bin:${process.env.PATH}`;
                     process.env.PKG_CONFIG_PATH = `/Library/Frameworks/GStreamer.framework/Versions/1.0/lib/pkgconfig`;
                     break;
                 case 'win32':
-                    install_win(`https://gstreamer.freedesktop.org/data/pkg/windows/${version}/msvc/gstreamer-1.0-msvc-${arch}-${version}.msi`);
-                    install_win(`https://gstreamer.freedesktop.org/data/pkg/windows/${version}/msvc/gstreamer-1.0-devel-msvc-${arch}-${version}.msi`);
+                    yield install_win(`https://gstreamer.freedesktop.org/data/pkg/windows/${version}/msvc/gstreamer-1.0-msvc-${arch}-${version}.msi`);
+                    yield install_win(`https://gstreamer.freedesktop.org/data/pkg/windows/${version}/msvc/gstreamer-1.0-devel-msvc-${arch}-${version}.msi`);
                     vars = ['PATH', 'PKG_CONFIG_PATH'];
                     process.env.PATH = `C:\\gstreamer\\1.0\\msvc_x86_64\\bin;${process.env.PATH}`;
                     process.env.PKG_CONFIG_PATH = `C:\\gstreamer\\1.0\\msvc_x86_64\\lib\\pkgconfig;${process.env.PKG_CONFIG_PATH}`;
