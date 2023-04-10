@@ -5,6 +5,8 @@ import * as fs from 'fs'
 import download from 'download'
 
 async function install_mac(url: string): Promise<void> {
+  core.info(`install: ${url}`)
+
   await download(url, 'package.pkg')
 
   child_process.execSync('sudo installer -pkg package.pkg -target /')
@@ -13,9 +15,11 @@ async function install_mac(url: string): Promise<void> {
 }
 
 async function install_win(url: string): Promise<void> {
+  core.info(`install: ${url}`)
+
   await download(url, 'installer.msi')
 
-  child_process.execSync('msiexec.exe / i installer.msi / qn')
+  child_process.execSync('msiexec.exe /i installer.msi /qn')
 
   fs.rmSync('installer.msi')
 }
@@ -55,10 +59,10 @@ async function run(): Promise<void> {
         break
       case 'darwin':
         install_mac(
-          `https://gstreamer.freedesktop.org/data/pkg/osx/$GST_VERSION/gstreamer-1.0-${version}-universal.pkg`
+          `https://gstreamer.freedesktop.org/data/pkg/osx/${version}/gstreamer-1.0-${version}-universal.pkg`
         )
         install_mac(
-          `https://gstreamer.freedesktop.org/data/pkg/osx/$GST_VERSION/gstreamer-1.0-devel-${version}-universal.pkg`
+          `https://gstreamer.freedesktop.org/data/pkg/osx/${version}/gstreamer-1.0-devel-${version}-universal.pkg`
         )
 
         vars = ['PATH', 'PKG_CONFIG_PATH']
@@ -69,10 +73,10 @@ async function run(): Promise<void> {
         break
       case 'win32':
         install_win(
-          `https://gstreamer.freedesktop.org/data/pkg/windows/$Env:GST_VERSION/msvc/gstreamer-1.0-msvc-${arch}-${version}.msi`
+          `https://gstreamer.freedesktop.org/data/pkg/windows/${version}/msvc/gstreamer-1.0-msvc-${arch}-${version}.msi`
         )
         install_win(
-          `https://gstreamer.freedesktop.org/data/pkg/windows/$Env:GST_VERSION/msvc/gstreamer-1.0-devel-msvc-${arch}-${version}.msi`
+          `https://gstreamer.freedesktop.org/data/pkg/windows/${version}/msvc/gstreamer-1.0-devel-msvc-${arch}-${version}.msi`
         )
 
         vars = ['PATH', 'PKG_CONFIG_PATH']
